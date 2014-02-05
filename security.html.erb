@@ -1,0 +1,90 @@
+  <%= render 'home/header' %>
+<div class="mainWrap">
+  <div class="container">
+    <div class="headerSection">
+      <div class="containerInner">
+        <div class="logoSectionWrap">
+          <span class="headerAccountSection"> </span>
+          <span class="logowrap"><img style="float:left" src="/assets/logo.png"></span>
+        </div>
+        <nav id="nav-wrap">
+          <ul id="nav">
+            <li>
+              <a href="#">News Feeds</a>
+            </li>
+            <li>
+              <a href="#">Calendars</a>
+            </li>
+            <li>
+              <a href="#">Tutorials</a>
+            </li>
+            <li>
+              <a href="#">FAQ</a>
+            </li>
+            <li>
+              <a href="#">10B5-1 Execution</a>
+            </li>
+            <li>
+              <a href="#">User Defined Events</a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+
+    <div class="containerInner">
+      <% if algofast_user_signed_in? %>
+
+          <%= form_for(@algofast_user, :as => :algofast_user, :id => 'checkAnswer',:validate=> true, :url =>{:controller => "webusersignup", :action=>'check_answer'}, :multipart => false) do |f| %>
+             <%= hidden_field_tag 'question_id_index', params[:question_id_index] == nil ? "0":params[:question_id_index]%>
+             <%= hidden_field_tag 'no_of_wrong_answers', params[:no_of_wrong_answers] == nil ? "0":params[:no_of_wrong_answers]%>
+
+              <div class="forgotPasswordWrap">
+                <div class="forgotPasswrord_innerSection">
+                  <div class="forgot_innerBorder">
+                    <%= render "layouts/messages" %>
+                    <div class="forgot_headerSection">Security Questions</div>
+                    <div class="forgot_bodySection">
+                        <%question_id_idx = params[:algofast_user] == nil ? "0": params[:question_id_index]
+                                Rails.logger.debug(params)
+                              %>
+                      <!-- Question s -->
+                      <div class="popMiddleContainerWrap paddingNone" id="que_step_1">
+                        <h6>Question <%=question_id_idx.to_i+1%>:</h6>
+                        <div class="popfieldsSectionRow">
+                          <div class="col1 left fieldpadd">
+
+                            <p><%= current_algofast_user.questions[question_id_idx.to_i].question_text %></p>
+                            <%= f.text_field "answer",  :class => 'required marginNone', autocomplete: :off, :autofocus => true %>
+
+                          </div>
+                        </div>
+                        <div class="Questions_footerSection">
+                          <!--<div class="column sendEmailWrap" id="que_step_btn_1"><a href="#" class="button radius right">Next</a></div>-->
+                          <div class="column sendEmailWrap" id="que_step_btn_3">
+                            <%= f.submit 'Verify', class: 'button radius right' %>
+                          </div>
+                        </div>
+                      </div>
+                      <!-- Questions -->
+                    </div>
+                  </div>
+                </div>
+              </div>
+          <%end%>
+      <%end%>
+    </div>
+    <!-- Footer Section Start -->
+    <%= render 'home/footer' %>
+    <!-- Footer Section End -->
+  </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function(){
+        $("#algofast_user_answer").focus();
+
+    });
+</script>
+
+
